@@ -16,10 +16,52 @@ import matplotlib.pyplot as plt
 import pyswarms as ps
 import SwarmPackagePy as sp
 from SwarmPackagePy import testFunctions as tf
-from SwarmPackagePy import animation, animation3D
+
 ########## FIM DOS IMPORTS##########
  
+#####################TESTE########################################################3
+from matplotlib import pyplot as plt
+import matplotlib.animation
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+import pandas as pd
 
+
+def animation(agents, function, lb, ub, sr=False):
+
+    side = np.linspace(lb, ub, (ub - lb) * 5)
+    X, Y = np.meshgrid(side, side)
+    Z = np.array([np.array([function([X[i][j], Y[i][j]])
+                            for j in range(len(X))])
+                  for i in range(len(X[0]))])
+
+    fig = plt.figure()
+    plt.axes(xlim=(lb, ub), ylim=(lb, ub))
+    plt.pcolormesh(X, Y, Z, shading='gouraud')
+    plt.colorbar()
+
+    x = np.array([j[0] for j in agents[0]])
+    y = np.array([j[1] for j in agents[0]])
+    sc = plt.scatter(x, y, color='black')
+
+    plt.title(function.__name__, loc='left')
+
+    def an(i):
+        x = np.array([j[0] for j in agents[i]])
+        y = np.array([j[1] for j in agents[i]])
+        sc.set_offsets(list(zip(x, y)))
+        plt.title('iteration: {}'.format(i), loc='right')
+
+    ani = matplotlib.animation.FuncAnimation(fig, an, frames=len(agents) - 1)
+
+    if sr:
+
+        ani.save('result.mp4')
+
+
+
+####################FIM TESTE######################################################
 
 
 ########## INICIO DO TRATAMENTO DE DADOS ########## 
@@ -39,7 +81,6 @@ train_target_data = np.reshape(train_target_data,(len(train_target_data),1))
 test_target_data = np.reshape(test_target_data,(len(test_target_data),1))
 scaler = MinMaxScaler(feature_range=(0, 1))
 
- 
 #Normalizar
 train_input_data = scaler.fit_transform(train_input_data)
 train_target_data = scaler.fit_transform(train_target_data)
@@ -84,4 +125,4 @@ alh = sp.ca(10, f , 0.0001 , 0.9, 2 ,2, mr=10, smp=2,
 print ("best score :",alh.get_Gbest())
 #print("h:",alh.get_agents())
 mlp_regress(alh.get_Gbest())
-#animation3D(alh.get_agents(), f, 10,10, sr=True)
+animation(alh.get_agents(), f, 10,10)
