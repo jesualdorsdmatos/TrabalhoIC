@@ -14,3 +14,7 @@
 2019-12-12 21:41:52,281 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.005871565292052461, best pos: [0.01044183]
 2019-12-12 22:16:16,559 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.3, 'w': 0.9}
 2019-12-12 22:24:07,365 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.00587207061053141, best pos: [0.01090789]
+2019-12-13 23:35:06,762 - pyswarms.discrete.binary - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.5, 'w': 0.9, 'k': 30, 'p': 2}
+2019-12-13 23:42:35,190 - pyswarms.discrete.binary - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.5, 'w': 0.9, 'k': 30, 'p': 2}
+2019-12-13 23:45:28,666 - pyswarms.discrete.binary - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.5, 'w': 0.9, 'k': 30, 'p': 2}
+2019-12-13 23:56:57,985 - pyswarms.discrete.binary - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.5, 'w': 0.9, 'k': 30, 'p': 2}
