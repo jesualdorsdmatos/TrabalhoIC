@@ -55,7 +55,7 @@ teste_target = scaler.fit_transform(teste_target)
 
 ################################ INICIO DA FUNCAO MLPREGRESS ################################  
 def mlp_regress(hyperparameters):
-    model = MLPRegressor(activation = 'logistic', solver = 'adam',hidden_layer_sizes=(200,),learning_rate_init=(hyperparameters[0]), beta_1 = (hyperparameters[1]),beta_2 = (hyperparameters[1]))
+    model = MLPRegressor(activation = 'logistic', solver = 'adam',hidden_layer_sizes=(200,),learning_rate_init=(hyperparameters[0]), beta_1 = (hyperparameters[1]),beta_2 = (hyperparameters[2]))
     model.fit(treino_input, treino_target)
     model.predict(teste_input)
     score = model.score(treino_input, treino_target)
@@ -94,7 +94,7 @@ print ("Melhor Score :",alh.get_Gbest())
 
 
 
-#correr teste com o hyperparametro optimizado
+################################ INICIO GRAFICO DE COMPARACAO ################################
 model = MLPRegressor(activation = 'logistic', hidden_layer_sizes=(200,),solver = 'adam',learning_rate_init=(alh.get_Gbest()[0]), beta_1 = (alh.get_Gbest()[1]),beta_2 = (alh.get_Gbest()[2]))
 model.fit(treino_input, treino_target.ravel())
 previsao = model.predict(teste_input)
@@ -104,33 +104,39 @@ print("loss",loss)
 
 
 plt.figure(figsize=(16,8))
-plt.plot(teste_target, label='Preco de abertura esperado', color='orange')
-plt.plot(previsao, label='Preco de abertura predicto', color='blue')
-plt.title("TREINEXXX E TESTEXXXX")
-plt.ylabel('Valor de abertura CARALHO')
-plt.xlabel('DIAS LINDOS')
+plt.plot(teste_target, label='Preco de abertura esperado', color='red')
+plt.plot(previsao, label='Preco de abertura previsto', color='blue')
+plt.title("Treino e Teste")
+plt.ylabel('Valor de abertura')
+plt.xlabel('DIAS')
 plt.legend()
 plt.show()
+################################ FIM GRAFICO DE COMPARACAO ################################
 
 
 
 
 
 
-
-################################ INICIO GRAFICO ################################
+################################ INICIO ANIMACAO 3D ################################
 rc('animation', html='html5')
  #Initialize mesher with sphere function
 m = Mesher(func=fx.sphere)
 
- 
+# Obtain a position-fitness matrix using the Mesher.compute_history_3d()
+# method. It requires a cost history obtainable from the optimizer class
+#pos_history_3d = m.compute_history_3d(alh.get_agents())
 
-animation = plot_contour(pos_history=alh.get_agents(),
-                         mesher=m,
-                        mark=(0,0))
+# Make a designer and set the x,y,z limits to (-1,1), (-1,1) and (-0.1,1) respectively
+from pyswarms.utils.plotters.formatters import Designer
+d = Designer(limits=[(-1,1), (-1,1), (-0.1,1)], label=['x-axis', 'y-axis', 'z-axis'])
 
- 
+# Make animation
+animation3d = plot_surface(pos_history=np.array(alh.get_agents()), # Use the cost_history we computed
+                           mesher=m, designer=d,       # Customizations
+                           mark=(0,0,0))               # Mark minima
 
-HTML(animation.to_html5_video())
+# Enables us to view it in a Jupyter notebook
+HTML(animation3d.to_html5_video())
 
-################################ FIM GRAFICO ################################
+################################ FIM ANIMMACAO 3D ################################
