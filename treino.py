@@ -55,7 +55,7 @@ teste_target = scaler.fit_transform(teste_target)
 
 ################################ INICIO DA FUNCAO MLPREGRESS ################################  
 def mlp_regress(hyperparameters):
-    model = MLPRegressor(activation = 'logistic', hidden_layer_sizes=(150,),learning_rate_init=(hyperparameters[0]), momentum = (hyperparameters[1]))
+    model = MLPRegressor(activation = 'logistic', solver = 'adam',hidden_layer_sizes=(200,),learning_rate_init=(hyperparameters[0]), beta_1 = (hyperparameters[1]),beta_2 = (hyperparameters[1]))
     model.fit(treino_input, treino_target)
     model.predict(teste_input)
     score = model.score(treino_input, treino_target)
@@ -79,7 +79,7 @@ def f(x):
 
 
 ################################ INICIO DA CHAMADA DA FUNCAO CAT ################################   
-alh = sp.ca(10, f , 0.0001 , 0.9, 2 ,2, mr=10, smp=2, spc=False, cdc=1, srd=0.1, w=0.1, c=1.05, csi=0.6)
+alh = sp.ca(10, f , 0.001 , 0.8, 3 ,10, mr=5, smp=2, spc=False, cdc=1, srd=0.01, w=0.1, c=1.05, csi=0.6)
 ################################ FIM DA CHAMADA DA FUNCAO CAT ################################   
 
 
@@ -88,16 +88,46 @@ print ("Melhor Score :",alh.get_Gbest())
 ################################ FIM PRINT RESULTADO ################################
 
 
+
+
+
+
+
+
+#correr teste com o hyperparametro optimizado
+model = MLPRegressor(activation = 'logistic', hidden_layer_sizes=(200,),solver = 'adam',learning_rate_init=(alh.get_Gbest()[0]), beta_1 = (alh.get_Gbest()[1]),beta_2 = (alh.get_Gbest()[2]))
+model.fit(treino_input, treino_target.ravel())
+previsao = model.predict(teste_input)
+score = model.score(teste_input, teste_target)
+loss = (1-score)
+print("loss",loss)
+
+
+plt.figure(figsize=(16,8))
+plt.plot(teste_target, label='Preco de abertura esperado', color='orange')
+plt.plot(previsao, label='Preco de abertura predicto', color='blue')
+plt.title("TREINEXXX E TESTEXXXX")
+plt.ylabel('Valor de abertura CARALHO')
+plt.xlabel('DIAS LINDOS')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
 ################################ INICIO GRAFICO ################################
 rc('animation', html='html5')
-# Initialize mesher with sphere function
+ #Initialize mesher with sphere function
 m = Mesher(func=fx.sphere)
 
  
 
 animation = plot_contour(pos_history=alh.get_agents(),
                          mesher=m,
-                         mark=(0,0))
+                        mark=(0,0))
 
  
 
