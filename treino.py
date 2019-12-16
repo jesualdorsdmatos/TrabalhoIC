@@ -3,7 +3,26 @@
 @author: Jesualdo Matos/João Neves
 """
  
- 
+"""
+        :param n: number of agents
+        :param function: test function
+        :param lb: lower limits for plot axes
+        :param ub: upper limits for plot axes
+        :param dimension: space dimension
+        :param iteration: number of iterations
+        :param mr: number of cats that hunt (default value is 10)
+        :param smp: seeking memory pool (default value is 2)
+        :param spc: self-position considering (default value is False)
+        :param cdc: counts of dimension to change (default value is 1)
+        :param srd: seeking range of the selected dimension
+        (default value is 0.1)
+        :param w: constant (default value is 0.1)
+        :param c: constant (default value is 1.05)
+        :param csi: constant (default value is 0.6)
+"""
+"""
+link do MLPRegressor:https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html
+""" 
  
 ################################ INICIO DOS IMPORTS ################################
 import pandas as pd
@@ -55,7 +74,7 @@ teste_target = scaler.fit_transform(teste_target)
 
 ################################ INICIO DA FUNCAO MLPREGRESS ################################  
 def mlp_regress(hyperparameters):
-    model = MLPRegressor(activation = 'logistic', solver = 'adam',hidden_layer_sizes=(200,),learning_rate_init=(hyperparameters[0]), beta_1 = (hyperparameters[1]),beta_2 = (hyperparameters[2]))
+    model = MLPRegressor(activation = 'logistic', solver = 'adam',max_iter=500,hidden_layer_sizes=(200,),learning_rate_init=(hyperparameters[0]), beta_1 = (hyperparameters[1]),beta_2 = (hyperparameters[2]))
     model.fit(treino_input, treino_target)
     model.predict(teste_input)
     score = model.score(treino_input, treino_target)
@@ -79,7 +98,7 @@ def f(x):
 
 
 ################################ INICIO DA CHAMADA DA FUNCAO CAT ################################   
-alh = sp.ca(10, f , 0.001 , 0.8, 3 ,10, mr=5, smp=2, spc=False, cdc=1, srd=0.01, w=0.1, c=1.05, csi=0.6)
+alh = sp.ca(10, f , 0.001 , 0.8, 3 ,30, mr=5, smp=2, spc=False, cdc=1, srd=0.01, w=0.1, c=1.05, csi=0.6)
 ################################ FIM DA CHAMADA DA FUNCAO CAT ################################   
 
 
@@ -95,7 +114,7 @@ print ("Melhor Score :",alh.get_Gbest())
 
 
 ################################ INICIO GRAFICO DE COMPARACAO ################################
-model = MLPRegressor(activation = 'logistic', hidden_layer_sizes=(200,),solver = 'adam',learning_rate_init=(alh.get_Gbest()[0]), beta_1 = (alh.get_Gbest()[1]),beta_2 = (alh.get_Gbest()[2]))
+model = MLPRegressor(activation = 'logistic',max_iter=500, hidden_layer_sizes=(200,),solver = 'adam',learning_rate_init=(alh.get_Gbest()[0]), beta_1 = (alh.get_Gbest()[1]),beta_2 = (alh.get_Gbest()[2]))
 model.fit(treino_input, treino_target.ravel())
 previsao = model.predict(teste_input)
 score = model.score(teste_input, teste_target)
