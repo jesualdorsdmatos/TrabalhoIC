@@ -74,7 +74,7 @@ teste_target = scaler.fit_transform(teste_target)
 
 ################################ INICIO DA FUNCAO MLPREGRESS ################################  
 def mlp_regress(h):
-    model = MLPRegressor(activation = 'logistic', solver = 'adam',max_iter=500,hidden_layer_sizes=(200,),learning_rate_init=(h[0]), beta_1 = (h[1]),beta_2 = (h[2]))
+    model = MLPRegressor(activation = 'logistic', solver = 'adam',max_iter=500, hidden_layer_sizes=(200,),learning_rate_init=(h[0]), beta_1 = (h[1]),beta_2 = (h[2]))
     model.fit(treino_input, treino_target)
     model.predict(teste_input)
     score = model.score(treino_input, treino_target)
@@ -98,7 +98,7 @@ def f(x):
 
 
 ################################ INICIO DA CHAMADA DA FUNCAO CAT ################################   
-alh = sp.ca(10, f , 0.001 , 0.8, 3 ,30, mr=5, smp=2, spc=False, cdc=1, srd=0.01, w=0.1, c=1.05, csi=0.6)
+alh = sp.ca(20, f , 0.1 , 0.8, 3 , 50, mr=20, smp=4, spc=False, cdc=1, srd=0.01, w=0.1, c=1.05, csi=0.6)
 ################################ FIM DA CHAMADA DA FUNCAO CAT ################################   
 
 
@@ -128,6 +128,7 @@ plt.xlabel('DIAS')
 plt.legend()
 plt.show()
 ################################ FIM GRAFICO DE COMPARACAO ################################
+
 
 
 
