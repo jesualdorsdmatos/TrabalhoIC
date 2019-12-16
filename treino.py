@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-@author: Jesualdo Matos/João Neves
-"""
- 
+
 """
         :param n: number of agents
         :param function: test function
@@ -68,7 +64,28 @@ teste_input = scaler.fit_transform(teste_input)
 teste_target = scaler.fit_transform(teste_target)
 ################################ FIM DO TRATAMENTO DE DADOS ################################ 
 
- 
+    
+################################ ANTES DA OPTIMIZACAO ################################
+expected_y  = teste_target
+model = MLPRegressor(activation = 'logistic', hidden_layer_sizes=(100,50),solver = 'adam',learning_rate_init = 0.001)
+model.fit(treino_input, treino_target.ravel())
+predicted_y = model.predict(teste_input)
+score = model.score(teste_input, teste_target)
+loss = (1-score)
+print("loss",loss)
+
+
+plt.figure(figsize=(16,8))
+plt.plot(expected_y, label='Preco de abertura esperado', color='orange')
+plt.plot(predicted_y, label='Preco de abertura predicto', color='blue')
+plt.title("Treino e Teste")
+plt.ylabel('High')
+plt.xlabel('Dias')
+plt.legend()
+
+################################ FIM DA OPTIMIZACAO ################################
+
+
 
 
 
