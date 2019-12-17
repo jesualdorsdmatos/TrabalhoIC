@@ -1,4 +1,3 @@
-
 """
         :param n: number of agents
         :param function: test function
